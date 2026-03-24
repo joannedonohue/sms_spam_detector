@@ -1,35 +1,91 @@
 # SMS Spam Classifier
 
-A production-ready NLP pipeline that classifies SMS messages as spam or legitimate in real time — built with a LinearSVC model, TF-IDF vectorization, and deployed via a Gradio web interface with zero setup required.
+A production-ready NLP pipeline that classifies SMS messages as spam or legitimate in real time — deployed via a Gradio web interface.
+
+---
 
 ## Overview
 
-Trained on the UCI SMS Spam Collection dataset (~5,500 labeled messages), this classifier achieves high precision across diverse message styles and lengths. The Gradio deployment allows non-technical users to test the model interactively without writing a single line of code.
+This project builds an end-to-end SMS spam detection system using TF-IDF vectorization and a LinearSVC classifier, wrapped in a scikit-learn Pipeline for clean, deployable inference. The model is served through a Gradio interface, enabling real-time classification without requiring any ML infrastructure.
 
-## How It Works
+---
 
-1. **Text preprocessing**: Raw SMS text is vectorized using TF-IDF (term frequency-inverse document frequency), capturing word importance relative to the corpus
-2. **Classification**: A Linear Support Vector Classifier (LinearSVC) separates ham from spam in the transformed feature space
-3. **Pipeline**: Both steps are packaged as a single sklearn Pipeline for reproducibility and clean deployment
+## Pipeline Architecture
+
+```
+Raw SMS Text
+     │
+TF-IDF Vectorizer  (text → numerical features)
+     │
+LinearSVC Classifier  (spam vs. ham)
+     │
+Gradio Web Interface  (real-time predictions)
+```
+
+The entire preprocessing + classification flow is encapsulated in a single scikit-learn `Pipeline` object, making the model portable and easy to deploy.
+
+---
 
 ## Model Performance
 
-| Class | Precision | Recall | F1 |
-|-------|-----------|--------|-----|
-| Ham   | 0.99      | 1.00   | 0.99 |
-| Spam  | 0.97      | 0.92   | 0.94 |
+Trained and evaluated on the UCI SMS Spam Collection (5,574 messages, 13.4% spam prevalence):
 
-## Stack
+| Class | Precision | Recall | F1-Score |
+|---|---|---|---|
+| Ham (legitimate) | 0.99 | 1.00 | 0.99 |
+| Spam | 0.97 | 0.92 | 0.94 |
 
-Python | scikit-learn | Gradio | TF-IDF | LinearSVC | pandas
-
-## Usage
-
-Run: pip install -r requirements.txt
-Then: python gradio_sms_text_classification.py
-
-Open the local Gradio URL and type any SMS message to classify it instantly.
+---
 
 ## Dataset
 
-UCI SMS Spam Collection — 5,574 messages, 13.4% spam prevalence
+- **Source:** UCI SMS Spam Collection
+- **Size:** ~5,574 labeled messages
+- **Class distribution:** 86.6% ham / 13.4% spam
+
+---
+
+## Tech Stack
+
+| Component | Tool |
+|---|---|
+| Text vectorization | TF-IDF (scikit-learn) |
+| Classifier | LinearSVC |
+| Pipeline | scikit-learn Pipeline |
+| Deployment | Gradio |
+| Data handling | pandas |
+| Language | Python |
+
+---
+
+## Repository Structure
+
+```
+sms-spam-classifier/
+├── sms_spam_detector.ipynb              # Model training & evaluation
+└── README.md
+```
+
+---
+
+## Outcomes
+
+- Achieved **0.99 F1-score on ham** and **0.94 F1-score on spam** detection
+- Built a clean, single-pipeline architecture that handles preprocessing and classification in one step
+- Deployed via Gradio for live, browser-based inference with no backend infrastructure required
+- Demonstrated practical NLP deployment patterns applicable to production messaging systems
+
+---
+
+## Getting Started
+
+```bash
+pip install scikit-learn gradio pandas
+jupyter notebook sms_spam_detector.ipynb
+```
+
+To launch the Gradio interface:
+
+```bash
+python gradio_sms_text_classification.py
+```
